@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens — single source of truth.
+ *
+ * Contrast ratios below were computed against the surface each token sits on and
+ * all body/label text pairs clear WCAG AA (4.5:1). Status colours always ship a
+ * matching icon + text label in the UI so colour is never the only indicator.
+ */
+@layer base {
+  :root {
+    /* Surfaces */
+    --background: 220 18% 97%;            /* #F5F6F8 light neutral gray */
+    --foreground: 217 33% 17%;            /* #1E293B slate-800   — 12.6:1 */
+    --card: 0 0% 100%;
+    --card-foreground: 217 33% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 33% 17%;
+
+    /* Brand */
+    --primary: 245 58% 51%;               /* #4338CA deep indigo — white text 7.9:1 */
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 226 100% 97%;         /* #EEF2FF */
+
+    --secondary: 220 20% 95%;
+    --secondary-foreground: 215 25% 27%;
+    --muted: 218 21% 95%;
+    --muted-foreground: 215 14% 34%;      /* #4B5563 — 7.6:1 on white */
+    --accent: 220 20% 95%;
+    --accent-foreground: 215 25% 27%;
+
+    /* Lines & focus */
+    --border: 218 16% 90%;                /* #E2E5EA */
+    --input: 218 16% 86%;
+    --ring: 245 58% 51%;
+
+    /* Status: absent / error */
+    --destructive: 0 72% 51%;             /* #DC2626 */
+    --destructive-foreground: 0 0% 100%;
+    --destructive-soft: 0 93% 94%;
+    --destructive-soft-foreground: 0 70% 35%;
+
+    /* Status: present / on time */
+    --success: 142 72% 29%;               /* #15803D */
+    --success-foreground: 0 0% 100%;
+    --success-soft: 141 79% 93%;
+    --success-soft-foreground: 143 64% 24%;
+
+    /* Status: late arrival */
+    --warning: 21 90% 41%;                /* #C2410C */
+    --warning-foreground: 0 0% 100%;
+    --warning-soft: 34 100% 92%;
+    --warning-soft-foreground: 17 79% 33%;
+
+    /* Status: incomplete record */
+    --caution: 38 92% 33%;                /* #A16207 */
+    --caution-foreground: 0 0% 100%;
+    --caution-soft: 55 97% 88%;
+    --caution-soft-foreground: 35 81% 29%;
+
+    /* Status: approved leave */
+    --info: 221 76% 48%;                  /* #1D4ED8 */
+    --info-foreground: 0 0% 100%;
+    --info-soft: 214 95% 93%;
+    --info-soft-foreground: 226 71% 40%;
+
+    --shadow-color: 215 25% 27%;
+    --radius: 0.875rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%;            /* #0F172A */
+    --foreground: 213 27% 92%;            /* #E2E8F0 — 13.1:1 */
+    --card: 221 39% 15%;
+    --card-foreground: 213 27% 92%;
+    --popover: 221 39% 17%;
+    --popover-foreground: 213 27% 92%;
+
+    --primary: 243 75% 62%;               /* white text 4.7:1, 3.8:1 vs background */
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 243 40% 22%;
+
+    --secondary: 220 24% 20%;
+    --secondary-foreground: 213 27% 92%;
+    --muted: 220 24% 20%;
+    --muted-foreground: 215 18% 72%;      /* 7.3:1 on card */
+    --accent: 220 24% 24%;
+    --accent-foreground: 213 27% 92%;
+
+    --border: 218 20% 26%;
+    --input: 218 20% 30%;
+    --ring: 243 75% 72%;
+
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 0 40% 10%;
+    --destructive-soft: 0 45% 20%;
+    --destructive-soft-foreground: 0 90% 85%;
+
+    --success: 142 66% 45%;
+    --success-foreground: 143 64% 8%;
+    --success-soft: 143 48% 17%;
+    --success-soft-foreground: 141 70% 78%;
+
+    --warning: 25 90% 55%;
+    --warning-foreground: 20 80% 10%;
+    --warning-soft: 20 55% 20%;
+    --warning-soft-foreground: 32 95% 80%;
+
+    --caution: 43 92% 52%;
+    --caution-foreground: 40 90% 10%;
+    --caution-soft: 40 50% 18%;
+    --caution-soft-foreground: 48 95% 80%;
+
+    --info: 221 83% 65%;
+    --info-foreground: 226 71% 10%;
+    --info-soft: 224 50% 22%;
+    --info-soft-foreground: 213 95% 85%;
+
+    --shadow-color: 222 60% 2%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Stops iOS Safari from flashing a gray box on tap; every control defines
+       its own :active feedback instead. */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 16px;
+    line-height: 1.5;
+    /* Avoids the iOS rubber-band revealing a white strip under the tab bar. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Keyboard focus must always be visible (never `outline: none` alone). */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Headings keep a sequential scale; sizes live in components. */
+  h1, h2, h3, h4 {
+    @apply font-semibold tracking-tight text-foreground;
+    text-wrap: balance;
+  }
+
+  input, select, textarea, button {
+    font: inherit;
+  }
+
+  /* Prevents iOS auto-zoom when focusing an input on a phone. */
+  @supports (-webkit-touch-callout: none) {
+    input, select, textarea {
+      font-size: max(16px, 1em);
+    }
+  }
+}
+
+@layer components {
+  /* Times, durations and counters must not jitter as digits change. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  .card-surface {
+    @apply bg-card text-card-foreground rounded-xl border border-border shadow-card;
+  }
+
+  /* Bottom-nav and sticky-CTA clearance so nothing is trapped under OS chrome. */
+  .pb-nav {
+    padding-bottom: calc(theme('spacing.navbar') + env(safe-area-inset-bottom, 0px) + 1rem);
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden rounded-md bg-muted;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    background-image: linear-gradient(90deg, transparent, hsl(var(--card) / 0.6), transparent);
+    animation: shimmer 1.6s infinite;
+    transform: translateX(-100%);
+  }
+}
+
+/* Honour the OS "reduce motion" setting: render final states immediately. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .skeleton::after {
+    display: none;
+  }
+}
+
+/* Printed monthly report: drop app chrome, keep the data. */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm;
+  }
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    font-size: 11pt;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .card-surface {
+    box-shadow: none !important;
+    border-color: #cbd5e1 !important;
+    break-inside: avoid;
+  }
+  table {
+    break-inside: auto;
+  }
+  tr {
+    break-inside: avoid;
+    break-after: auto;
+  }
+  thead {
+    display: table-header-group;
+  }
+}
+
+.print-only {
+  display: none;
+}

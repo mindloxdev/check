@@ -1,0 +1,15 @@
+# Normalise line endings so the repo stays identical across Windows, macOS and
+# Linux checkouts. Shell scripts must keep LF or they will not execute.
+* text=auto eol=lf
+
+*.sh      text eol=lf
+*.mjs     text eol=lf
+*.sql     text eol=lf
+
+*.png     binary
+*.jpg     binary
+*.ico     binary
+*.woff2   binary
+
+# Collapse the lockfile in diffs; it is generated, not reviewed by hand.
+package-lock.json linguist-generated=true -diff
