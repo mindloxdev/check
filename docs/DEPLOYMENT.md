@@ -183,8 +183,18 @@ just a restart.
 - [ ] Email confirmation enabled
 - [ ] Sign-ups disabled once your account exists
 - [ ] Redirect URL added for `/reset-password`
-- [ ] Only the anon key in the frontend env — grep the built bundle:
-      `grep -r "service_role" dist/` should return nothing
+- [ ] Only the anon key reached the bundle. Vite inlines `VITE_*` values at
+      build time, so decode what actually shipped — the payload must say
+      `"role":"anon"`:
+
+      ```bash
+      grep -ohE 'eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+' dist/assets/*.js \
+        | cut -d. -f2 | base64 -d 2>/dev/null
+      ```
+
+      (Grepping for the literal string `service_role` is not a useful check —
+      `src/lib/supabase.ts` contains that word on purpose, in the guard that
+      refuses to start if it is handed such a key.)
 - [ ] Time zone set correctly in Settings (this drives every date boundary)
 - [ ] Wi-Fi verification configured, or deliberately left off
 - [ ] Monthly reminder scheduled if you want email — see
